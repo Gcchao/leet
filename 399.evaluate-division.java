@@ -1,3 +1,5 @@
+import java.util.Map;
+
 /*
  * [399] Evaluate Division
  *
@@ -40,6 +42,43 @@
  */
 class Solution {
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        
+        Map<String, String> root = new HashMap<>();
+        Map<String, Double> value = new HashMap<>();
+        for (int i = 0; i < equations.length; i++) {
+            String r1 = find(root, value, equations[i][0]);
+            String r2 = find(root, value, equations[i][1]);
+            root.put(r1, r2);
+            value.put(r1, value.get(equations[i][1])*values[i]/value.get(equations[i][0]));
+        }
+        double[] res = new double[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            if (!root.containsKey(queries[i][0]) || !root.containsKey(queries[i][1])) {
+                res[i] = -1;
+                continue;
+            }
+            String r1 = find(root, value, queries[i][0]);
+            String r2 = find(root, value, queries[i][1]);
+            if (!r1.equals(r2)) {
+                res[i] = -1;
+                continue;
+            }
+            res[i] = (double)value.get(queries[i][0]) / value.get(queries[i][1]);
+        }
+        return res;
+    }
+    private String find(Map<String, String> root, Map<String, Double> value, String s) {
+        if (!root.containsKey(s)) {
+            root.put(s, s);
+            value.put(s, 1.0);
+            return s;
+        }
+        String lastp = root.get(s);
+        if (lastp.equals(s)) {
+            return s;
+        }
+        String p = find(root, value, lastp);
+        root.put(s, p);
+        value.put(s, value.get(s) * value.get(lastp));
+        return p;
     }
 }
