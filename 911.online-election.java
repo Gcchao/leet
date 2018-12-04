@@ -62,8 +62,14 @@ class TopVotedCandidate {
         for (int i = 0; i < persons.length; i++) {
             if (i == 0) {
                 res[0] = persons[0];
-                map.put()
+                map.put(max, 1);
             }
+            else {
+                map.put(persons[i], map.get(persons[i] + 1));
+                if (person[i] != max && map.get(persons[i]) >= max) {
+                    
+                }
+            } 
         }
     }
     
