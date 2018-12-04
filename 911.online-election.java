@@ -49,9 +49,22 @@
  * 
  */
 class TopVotedCandidate {
-
+    int[] res;
+    int[] times;
     public TopVotedCandidate(int[] persons, int[] times) {
-        
+        res = new int[times.length];
+        this.times = times;
+        Map<Integer, Integer> map = new HashMap<>();
+        max = persons[0];
+        for (int person : persons) {
+            map.put(person, 0);
+        }
+        for (int i = 0; i < persons.length; i++) {
+            if (i == 0) {
+                res[0] = persons[0];
+                map.put()
+            }
+        }
     }
     
     public int q(int t) {

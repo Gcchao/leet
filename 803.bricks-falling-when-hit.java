@@ -99,7 +99,7 @@ class Solution {
 // 				//这个count就是打完后一定会剩下的砖块数量.
 //         int count = uf.size[uf.find(0)];
 //         int[] res = new int[hits.length];
-// 				//反向遍历hits数组，一个一个复原回board
+// 			//反向遍历hits数组，一个一个复原回board
 //         for (int i = hits.length - 1; i >= 0; i--) {
 //             int[] hit = hits[i];
 //             if (grid[hit[0]][hit[1]] == 2) {
