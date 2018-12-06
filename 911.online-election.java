@@ -55,7 +55,7 @@ class TopVotedCandidate {
         res = new int[times.length];
         this.times = times;
         Map<Integer, Integer> map = new HashMap<>();
-        max = persons[0];
+        int max = persons[0];
         for (int person : persons) {
             map.put(person, 0);
         }
@@ -65,16 +65,33 @@ class TopVotedCandidate {
                 map.put(max, 1);
             }
             else {
-                map.put(persons[i], map.get(persons[i] + 1));
-                if (person[i] != max && map.get(persons[i]) >= max) {
-                    
+                map.put(persons[i], map.get(persons[i]) + 1);
+                if (persons[i] != max && map.get(persons[i]) >= map.get(max)) {
+                    max = persons[i];
                 }
+                res[i] = max;
             } 
         }
     }
     
     public int q(int t) {
-        
+        int s = 0, e = res.length - 1;
+        while (s + 1 < e) {
+            int mid = s + (e - s) / 2;
+            if (times[mid] == t) {
+                return res[mid];
+            }
+            else if (times[mid] > t) {
+                e = mid;
+            }
+            else {
+                s = mid;
+            }
+        }
+        if (t < times[e]) {
+            return res[s];
+        }
+        return res[e];
     }
 }
 
