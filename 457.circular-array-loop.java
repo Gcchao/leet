@@ -35,10 +35,11 @@ class Solution {
                 continue;
             }
             int slow = i, fast = getindex(nums, i);
-            while (nums[slow]*nums[fast] > 0 && nums[slow]*nums[getindex(nums, fast)] > 0 ) {
+            while (nums[slow] * nums[fast] > 0 && nums[slow] * nums[getindex(nums, fast)] > 0) {
                 if (fast == slow) {
                     if (fast == getindex(nums, fast)) {
                         break;
+                        // check circle
                     }
                     return true;
                 }
@@ -48,17 +49,15 @@ class Solution {
 
             int val = nums[i];
             int j = i;
-            while (val*nums[j] > 0) {
+            while (val * nums[j] > 0) {
                 nums[j] = 0;
                 j = getindex(nums, j);
             }
         }
         return false;
     }
+
     private int getindex(int[] nums, int i) {
         return nums[i] + i >= 0 ? (nums[i] + i) % nums.length : nums.length + (nums[i] + i) % nums.length;
     }
 }
-
-
-

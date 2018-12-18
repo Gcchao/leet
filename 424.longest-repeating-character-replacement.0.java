@@ -6,9 +6,9 @@
  * https://leetcode.com/problems/longest-repeating-character-replacement/description/
  *
  * algorithms
- * Medium (43.08%)
- * Total Accepted:    24.4K
- * Total Submissions: 56.7K
+ * Medium (43.09%)
+ * Total Accepted:    24.5K
+ * Total Submissions: 56.8K
  * Testcase Example:  '"ABAB"\n2'
  *
  * Given a string that consists of only uppercase English letters, you can
@@ -51,6 +51,17 @@
  */
 class Solution {
     public int characterReplacement(String s, int k) {
-        
+        int len = s.length();
+        int pre = 0, res = 0, maxcount = 0;
+        int[] map = new int[26];
+        for (int end = 0; end < len; end++) {
+            maxcount = Math.max(maxcount, ++map[s.charAt(end) - 'A']);
+            while (end - pre + 1 > maxcount + k) {
+                map[s.charAt(pre) - 'A']--;
+                pre++;
+            }
+            res = Math.max(res, end - pre + 1);
+        }
+        return res;
     }
 }
