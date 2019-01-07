@@ -59,7 +59,82 @@
  */
 class Solution {
     public int[] hitBricks(int[][] grid, int[][] hits) {
-        
+        if (grid == null || grid.length == 0) {
+            return new int[]{};
+        }
+        int m = grid.length, n = grid[0].length;
+        UnionFind un = new UnionFind(m * n + 1);
+        for (int[] hit : hits) {
+            if (grid[hit[0]][hit[1]] == 1) {
+                grid[hit[0]][hit[1]] = 2;
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    unionaround(i, j, grid, un);
+                }
+            }
+        }
+        int[] res = new int[hits.length];
+        int count = un.size[un.find(0)];
+        for (int i = hits.length - 1; i >= 0; i--) {
+            int[] hit = hits[i];
+            if (grid[hit[0]][hit[1]] == 2) {
+                unionaround(hit[0], hit[1], grid, un);
+                grid[hit[0]][hit[1]] = 1;
+            }
+
+
+            int newsize = un.size[un.find(0)];
+            res[i] = newsize - count > 0 ? newsize - count - 1 : 0;
+            count = newsize;
+        }
+        return res;
+    }
+    public void unionaround(int i, int j, int[][] grid, UnionFind un) {
+        int m = grid.length, n = grid[0].length;
+        int[][] dirs = new int[][]{{1,0}, {-1,0}, {0,-1}, {0,1}};
+        for (int[] d : dirs) {
+            int nx = i + d[0];
+            int ny = j + d[1];
+            if (nx < 0 || nx >= m || ny < 0 || ny >= n) {
+                continue;
+            }
+            if (grid[nx][ny] == 1) {
+                un.union(nx * n + ny + 1, i * n + j + 1);
+            }
+        }
+        if (i == 0) {
+            un.union(i * n + j + 1, 0);
+        }
+    }
+    class UnionFind{
+        int[] id;
+        int[] size;
+        public UnionFind(int x) {
+            id = new int[x];
+            size = new int[x];
+            for (int i = 0; i < x; i++) {
+                id[i] = i;
+                size[i] = 1;
+            }
+        }
+        public int find(int root) {
+            while (id[root] != root) {
+                id[root] = id[id[root]];
+                root = id[root];
+            }
+            return root;
+        }
+        public void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa != pb) {
+                id[pa] = pb;
+                size[pb] += size[pa];
+            }
+        }
     }
 }
 
