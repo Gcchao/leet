@@ -5,8 +5,12 @@ class googleoa {
     public static void main(String[] args) {
 
         res = new int[6];
-        int[] nums = new int[] { 1, 2, 1, 3 };
+        int[] nums = new int[] {2, 1, 3, 3};
         System.out.println(findmax(nums));
+        int sum = 0;
+
+
+
 
         // int[][] dp = new int[6][6];
         // int n = nums.length;
@@ -36,7 +40,7 @@ class googleoa {
             dp[i][i] = nums[i];
         }
         for (int l = 1; l <= n; l++) {
-            for (int from = 0, to = from + l - 1; to < n; from++, to++) {
+            for (int from = 0, to = from + l; to < n; from++, to++) {
                 for (int k = from + 1; k <= to; k++) {
                     int time = dp[from][k - 1] * dp[k][to];
                     int plus = dp[from][k - 1] + dp[k][to];
