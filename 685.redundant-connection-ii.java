@@ -61,37 +61,48 @@ class Solution {
         if (edges == null || edges.length == 0) {
             return new int[2];
         }
-        int[] can1 = null, can2 = null;
-        int[] un = new int[edges.length + 1];
-        for (int i = 1; i < un.length; i++) {
-            un[i] = i;
+        int[] can1 = new int[]{-1, -1};
+        int[] can2 = new int[]{-1, -1};
+        int[] uf = new int[edges.length + 1];
+        for (int[] e : edges) {
+            if (uf[e[1]] == 0) {
+                uf[e[1]] = e[0];
+            }
+            else {
+                can1 = new int[]{uf[e[1]], e[1]};
+                can2 = new int[]{e[0], e[1]};
+                e[1] = 0;
+            }
         }
-        for (int[] edge : edges) {
-            int px = find(un, edge[0]);
-            int py = find(un, edge[1]);
-            if (px == py) {
-                can1 = edge;
-            } else {
-                if (py != edge[1]) {
-                    can2 = edge;
-                } else {
-                    un[px] = py;
+
+        for (int i = 0; i < uf.length; i++) {
+            uf[i] = i;
+        }
+
+        for (int[] e : edges) {
+            if (e[1] == 0) {
+                continue;
+            } 
+            int a = e[0], b = e[1];
+            if (find(uf, a) == b) {
+                if (can1[0] == -1) {
+                    return e;
                 }
+                return can1;
             }
+            uf[b] = a;
         }
-        if (can1 == null) {
-            return can2;
-        }
-        if (can2 == null) {
-            return can1;
-        }
-        for (int[] edge : edges) {
-            if (edge[1] == can1[1]) {
-                return edge;
-            }
-        }
-        return new int[2];
+        return can2;
     }
+
+    // int child = edges[i][1], father = edges[i][0];
+    // if (root(parent, father) == child) {
+    //     if (can1[0] == -1) {
+    //         return edges[i];
+    //     }
+    //     return can1;
+    // }
+    // parent[child] = father;
 
     private int find(int[] un, int root) {
         while (root != un[root]) {

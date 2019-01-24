@@ -42,7 +42,6 @@ class Solution {
     public int getMoneyAmount(int n) {
         int[][] dp = new int[n + 2][n + 2];
 
-
         dp[1][1] = 0;
         for (int l = 1; l < n; l++) {
             for (int from = 1, to = from + l; to <=n; from++, to++) {
